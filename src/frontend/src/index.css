@@ -1,0 +1,106 @@
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/assets/fonts/PlayfairDisplay-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url("/assets/fonts/GeneralSans-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Ivory parchment background */
+    --background: 96 0.015 80;
+    --foreground: 22 0.06 30;
+
+    /* Cards slightly warmer */
+    --card: 97 0.01 75;
+    --card-foreground: 22 0.06 30;
+
+    /* Popovers */
+    --popover: 97 0.01 75;
+    --popover-foreground: 22 0.06 30;
+
+    /* Deep rose primary */
+    --primary: 48 0.2 12;
+    --primary-foreground: 97 0.01 75;
+
+    /* Muted rose secondary */
+    --secondary: 88 0.05 15;
+    --secondary-foreground: 35 0.1 20;
+
+    /* Warm muted tones */
+    --muted: 92 0.02 80;
+    --muted-foreground: 55 0.06 35;
+
+    /* Gold accent */
+    --accent: 80 0.12 85;
+    --accent-foreground: 30 0.1 40;
+
+    --destructive: 50 0.22 25;
+    --destructive-foreground: 97 0.01 75;
+
+    --border: 88 0.04 60;
+    --input: 90 0.03 70;
+    --ring: 48 0.2 12;
+
+    --radius: 0.75rem;
+
+    /* Chart colors */
+    --chart-1: 48 0.2 12;
+    --chart-2: 80 0.12 85;
+    --chart-3: 65 0.15 50;
+    --chart-4: 70 0.1 20;
+    --chart-5: 55 0.08 70;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .parchment-bg {
+    background-image: url("/assets/generated/treaty-bg.dim_1200x800.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .gold-border {
+    border: 1.5px solid oklch(var(--accent));
+  }
+
+  .rose-glow {
+    box-shadow: 0 0 0 3px oklch(var(--primary) / 0.15);
+  }
+}
