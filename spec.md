@@ -1,27 +1,23 @@
 # Sidharth and Sahitya Treaty
 
 ## Current State
-New project, no existing code.
+All data (calendar notes and treaty signatures) is stored in React `useState` only. Every page refresh wipes everything. There is no persistence layer -- the backend is essentially empty.
 
 ## Requested Changes (Diff)
 
 ### Add
-- Login page with username/password authentication
-  - Accepted usernames: Sidharth, Sahitya
-  - Shared password: Tillu
-- After login, show a calendar-based system where users can add, view, and manage treaty notes/events per date
-- Display logged-in user's name
-- Logout button
+- Backend: `addNote`, `deleteNote`, `getNotes` -- store/retrieve calendar notes (id, date, title, description, author)
+- Backend: `signTreaty`, `getSignatures` -- store treaty signatures per user (Sidharth / Sahitya)
+- Frontend: Load notes and signatures from backend on mount
+- Frontend: Write to backend on add/delete note and on sign treaty
 
 ### Modify
-N/A
+- Frontend: Replace in-memory `useState` for notes and signatures with backend-synced state
 
 ### Remove
-N/A
+- Frontend: `INITIAL_NOTES` hardcoded seed data (replaced by backend-loaded data)
 
 ## Implementation Plan
-1. Backend: Store calendar events/notes with date, title, description, and author (username)
-2. Login logic: frontend-only credential check (Sidharth or Sahitya + password Tillu)
-3. Calendar view: monthly calendar grid, click a date to add/view notes
-4. Event list per selected date
-5. Add/delete events tied to a date
+1. Update `main.mo` to expose note CRUD and treaty signature APIs with stable storage
+2. Regenerate `backend.d.ts` types
+3. Update `App.tsx` to call backend on mount and on every mutation
