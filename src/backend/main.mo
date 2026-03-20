@@ -1,38 +1,21 @@
 import Map "mo:core/Map";
 import Text "mo:core/Text";
 import Nat "mo:core/Nat";
-import Char "mo:core/Char";
-import Nat32 "mo:core/Nat32";
 import Principal "mo:core/Principal";
-
 import AccessControl "authorization/access-control";
 import MixinAuthorization "authorization/MixinAuthorization";
 
 actor {
+  // Keep old stable vars to satisfy upgrade compatibility
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
 
-  public type UserProfile = {
-    name : Text;
-  };
-
+  public type UserProfile = { name : Text };
   let userProfiles = Map.empty<Principal, UserProfile>();
-
-  public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
-    userProfiles.get(caller);
-  };
-
-  public query ({ caller }) func getUserProfile(user : Principal) : async ?UserProfile {
-    userProfiles.get(user);
-  };
-
-  public shared ({ caller }) func saveCallerUserProfile(profile : UserProfile) : async () {
-    userProfiles.add(caller, profile);
-  };
 
   // --- Notes ---
 
-  type Note = {
+  public type Note = {
     id : Text;
     date : Text;
     title : Text;
@@ -40,25 +23,8 @@ actor {
     author : Text;
   };
 
-  var stableNotes : [Note] = [];
   var nextId : Nat = 0;
-
   let notes = Map.empty<Text, Note>();
-
-  // Restore notes from stable storage on upgrade
-  for (n in stableNotes.vals()) {
-    notes.add(n.id, n);
-  };
-
-  system func preupgrade() {
-    stableNotes := notes.values().toArray();
-    stableSigs := sigs.entries().toArray();
-  };
-
-  system func postupgrade() {
-    stableNotes := [];
-    stableSigs := [];
-  };
 
   public shared func addNote(date : Text, title : Text, description : Text, author : Text) : async Text {
     let id = nextId.toText();
@@ -68,31 +34,30 @@ actor {
   };
 
   public shared func deleteNote(id : Text) : async Bool {
-    if (notes.containsKey(id)) {
-      notes.remove(id);
-      true;
-    } else {
-      false;
-    };
+    notes.remove(id);
+    true;
   };
 
   public query func getNotes() : async [Note] {
-    let arr = notes.values().toArray();
-    arr.sort(func(a, b) {
-      let ia = parseNat(a.id);
-      let ib = parseNat(b.id);
-      if (ia > ib) #less else if (ia < ib) #greater else #equal;
+    notes.values().toArray().sort(func(a, b) {
+      Nat.compare(parseNat(b.id), parseNat(a.id));
     });
+  };
+
+  func parseNat(t : Text) : Nat {
+    var n : Nat = 0;
+    for (c in t.chars()) {
+      let d = Nat32.toNat(c.toNat32());
+      if (d >= 48 and d <= 57) {
+        n := n * 10 + (d - 48);
+      };
+    };
+    n;
   };
 
   // --- Treaty Signatures ---
 
-  var stableSigs : [(Text, Text)] = [];
   let sigs = Map.empty<Text, Text>();
-
-  for ((person, date) in stableSigs.vals()) {
-    sigs.add(person, date);
-  };
 
   public shared func signTreaty(person : Text, signedDate : Text) : async Bool {
     sigs.add(person, signedDate);
@@ -107,16 +72,31 @@ actor {
     sigs.clear();
   };
 
-  // --- Helpers ---
+  // --- Treaty Text ---
 
-  func parseNat(t : Text) : Nat {
-    var n : Nat = 0;
-    for (c in t.chars()) {
-      let d = c.toNat32();
-      if (d >= 48 and d <= 57) {
-        n := n * 10 + (d - 48).toNat();
-      };
-    };
-    n;
+  var treatyClauses : [Text] = [];
+
+  public shared func saveTreatyText(clauses : [Text]) : async Bool {
+    treatyClauses := clauses;
+    true;
   };
+
+  public query func getTreatyText() : async [Text] {
+    treatyClauses;
+  };
+
+  // --- Daily Signatures ---
+
+  let dailySigs = Map.empty<Text, Text>();
+
+  public shared func signDaily(person : Text, date : Text, displayDate : Text) : async Bool {
+    let key = person # ":" # date;
+    dailySigs.add(key, displayDate);
+    true;
+  };
+
+  public query func getDailySignatures() : async [(Text, Text)] {
+    dailySigs.entries().toArray();
+  };
+
 };

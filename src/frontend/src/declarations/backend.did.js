@@ -34,12 +34,18 @@ export const idlService = IDL.Service({
   'deleteNote' : IDL.Func([IDL.Text], [IDL.Bool], []),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
   'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getDailySignatures' : IDL.Func(
+      [],
+      [IDL.Vec(IDL.Tuple(IDL.Text, IDL.Text))],
+      ['query'],
+    ),
   'getNotes' : IDL.Func([], [IDL.Vec(Note)], ['query']),
   'getSignatures' : IDL.Func(
       [],
       [IDL.Vec(IDL.Tuple(IDL.Text, IDL.Text))],
       ['query'],
     ),
+  'getTreatyText' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
   'getUserProfile' : IDL.Func(
       [IDL.Principal],
       [IDL.Opt(UserProfile)],
@@ -47,6 +53,8 @@ export const idlService = IDL.Service({
     ),
   'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
   'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'saveTreatyText' : IDL.Func([IDL.Vec(IDL.Text)], [IDL.Bool], []),
+  'signDaily' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [IDL.Bool], []),
   'signTreaty' : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),
 });
 
@@ -79,12 +87,18 @@ export const idlFactory = ({ IDL }) => {
     'deleteNote' : IDL.Func([IDL.Text], [IDL.Bool], []),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
     'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getDailySignatures' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Tuple(IDL.Text, IDL.Text))],
+        ['query'],
+      ),
     'getNotes' : IDL.Func([], [IDL.Vec(Note)], ['query']),
     'getSignatures' : IDL.Func(
         [],
         [IDL.Vec(IDL.Tuple(IDL.Text, IDL.Text))],
         ['query'],
       ),
+    'getTreatyText' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
     'getUserProfile' : IDL.Func(
         [IDL.Principal],
         [IDL.Opt(UserProfile)],
@@ -92,6 +106,8 @@ export const idlFactory = ({ IDL }) => {
       ),
     'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
     'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'saveTreatyText' : IDL.Func([IDL.Vec(IDL.Text)], [IDL.Bool], []),
+    'signDaily' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [IDL.Bool], []),
     'signTreaty' : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),
   });
 };

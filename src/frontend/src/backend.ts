@@ -112,11 +112,15 @@ export interface backendInterface {
     deleteNote(id: string): Promise<boolean>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
+    getDailySignatures(): Promise<Array<[string, string]>>;
     getNotes(): Promise<Array<Note>>;
     getSignatures(): Promise<Array<[string, string]>>;
+    getTreatyText(): Promise<Array<string>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
+    saveTreatyText(clauses: Array<string>): Promise<boolean>;
+    signDaily(person: string, date: string, displayDate: string): Promise<boolean>;
     signTreaty(person: string, signedDate: string): Promise<boolean>;
 }
 import type { UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
@@ -220,6 +224,20 @@ export class Backend implements backendInterface {
             return from_candid_UserRole_n4(this._uploadFile, this._downloadFile, result);
         }
     }
+    async getDailySignatures(): Promise<Array<[string, string]>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getDailySignatures();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getDailySignatures();
+            return result;
+        }
+    }
     async getNotes(): Promise<Array<Note>> {
         if (this.processError) {
             try {
@@ -245,6 +263,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.getSignatures();
+            return result;
+        }
+    }
+    async getTreatyText(): Promise<Array<string>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getTreatyText();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getTreatyText();
             return result;
         }
     }
@@ -287,6 +319,34 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.saveCallerUserProfile(arg0);
+            return result;
+        }
+    }
+    async saveTreatyText(arg0: Array<string>): Promise<boolean> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.saveTreatyText(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.saveTreatyText(arg0);
+            return result;
+        }
+    }
+    async signDaily(arg0: string, arg1: string, arg2: string): Promise<boolean> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.signDaily(arg0, arg1, arg2);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.signDaily(arg0, arg1, arg2);
             return result;
         }
     }

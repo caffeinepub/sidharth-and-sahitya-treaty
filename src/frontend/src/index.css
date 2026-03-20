@@ -1,15 +1,15 @@
 @font-face {
-  font-family: "Playfair Display";
-  src: url("/assets/fonts/PlayfairDisplay-Variable.woff2") format("woff2");
-  font-weight: 100 900;
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque-Variable.woff2") format("woff2");
+  font-weight: 200 800;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "General Sans";
-  src: url("/assets/fonts/GeneralSans-Variable.woff2") format("woff2");
-  font-weight: 100 900;
+  font-family: "Satoshi";
+  src: url("/assets/fonts/Satoshi-Variable.woff2") format("woff2");
+  font-weight: 300 700;
   font-style: normal;
   font-display: swap;
 }
@@ -20,49 +20,49 @@
 
 @layer base {
   :root {
-    /* Ivory parchment background */
-    --background: 96 0.015 80;
-    --foreground: 22 0.06 30;
+    /* Sporty dark theme */
+    --background: 0.09 0.012 250;
+    --foreground: 0.95 0.006 250;
 
-    /* Cards slightly warmer */
-    --card: 97 0.01 75;
-    --card-foreground: 22 0.06 30;
+    /* Cards - dark charcoal */
+    --card: 0.13 0.012 250;
+    --card-foreground: 0.95 0.006 250;
 
     /* Popovers */
-    --popover: 97 0.01 75;
-    --popover-foreground: 22 0.06 30;
+    --popover: 0.13 0.012 250;
+    --popover-foreground: 0.95 0.006 250;
 
-    /* Deep rose primary */
-    --primary: 48 0.2 12;
-    --primary-foreground: 97 0.01 75;
+    /* Electric cyan primary */
+    --primary: 0.65 0.22 200;
+    --primary-foreground: 0.08 0.01 250;
 
-    /* Muted rose secondary */
-    --secondary: 88 0.05 15;
-    --secondary-foreground: 35 0.1 20;
+    /* Secondary */
+    --secondary: 0.18 0.015 250;
+    --secondary-foreground: 0.85 0.008 250;
 
-    /* Warm muted tones */
-    --muted: 92 0.02 80;
-    --muted-foreground: 55 0.06 35;
+    /* Muted dark tones */
+    --muted: 0.17 0.012 250;
+    --muted-foreground: 0.55 0.01 250;
 
-    /* Gold accent */
-    --accent: 80 0.12 85;
-    --accent-foreground: 30 0.1 40;
+    /* Neon green accent */
+    --accent: 0.72 0.19 145;
+    --accent-foreground: 0.08 0.01 145;
 
-    --destructive: 50 0.22 25;
-    --destructive-foreground: 97 0.01 75;
+    --destructive: 0.58 0.24 25;
+    --destructive-foreground: 0.97 0.005 25;
 
-    --border: 88 0.04 60;
-    --input: 90 0.03 70;
-    --ring: 48 0.2 12;
+    --border: 0.22 0.012 250;
+    --input: 0.2 0.01 250;
+    --ring: 0.65 0.22 200;
 
     --radius: 0.75rem;
 
     /* Chart colors */
-    --chart-1: 48 0.2 12;
-    --chart-2: 80 0.12 85;
-    --chart-3: 65 0.15 50;
-    --chart-4: 70 0.1 20;
-    --chart-5: 55 0.08 70;
+    --chart-1: 0.65 0.22 200;
+    --chart-2: 0.72 0.19 145;
+    --chart-3: 0.7 0.18 280;
+    --chart-4: 0.75 0.2 50;
+    --chart-5: 0.6 0.15 320;
   }
 
   * {
@@ -89,18 +89,31 @@
     text-wrap: balance;
   }
 
-  .parchment-bg {
-    background-image: url("/assets/generated/treaty-bg.dim_1200x800.jpg");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+  .sporty-bg {
+    background: oklch(var(--background));
+    background-image: radial-gradient(
+        ellipse 80% 50% at 20% -10%,
+        oklch(var(--primary) / 0.08) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        ellipse 60% 40% at 85% 110%,
+        oklch(var(--accent) / 0.06) 0%,
+        transparent 60%
+      );
   }
 
-  .gold-border {
-    border: 1.5px solid oklch(var(--accent));
+  .electric-border {
+    border: 1.5px solid oklch(var(--primary) / 0.4);
   }
 
-  .rose-glow {
-    box-shadow: 0 0 0 3px oklch(var(--primary) / 0.15);
+  .electric-glow {
+    box-shadow: 0 0 0 3px oklch(var(--primary) / 0.2);
+  }
+
+  .stat-card {
+    background: oklch(var(--card));
+    border: 1px solid oklch(var(--border));
+    border-top: 2px solid oklch(var(--primary) / 0.6);
   }
 }

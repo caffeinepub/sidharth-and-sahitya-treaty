@@ -29,11 +29,15 @@ export interface _SERVICE {
   'deleteNote' : ActorMethod<[string], boolean>,
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getDailySignatures' : ActorMethod<[], Array<[string, string]>>,
   'getNotes' : ActorMethod<[], Array<Note>>,
   'getSignatures' : ActorMethod<[], Array<[string, string]>>,
+  'getTreatyText' : ActorMethod<[], Array<string>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'saveTreatyText' : ActorMethod<[Array<string>], boolean>,
+  'signDaily' : ActorMethod<[string, string, string], boolean>,
   'signTreaty' : ActorMethod<[string, string], boolean>,
 }
 export declare const idlService: IDL.ServiceClass;
